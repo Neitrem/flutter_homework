@@ -1,0 +1,26 @@
+name: flutter_application_1
+flutter:
+  assets:
+    - assets/music_images/
+  uses-material-design: true
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+uses-material-design: true
+
+environment:
+  sdk: '>=3.1.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  auto_route: ^2.3.2
+  salomon_bottom_bar: ^3.1.0
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  auto_route_generator: ^2.3.2
+  build_runner: ^2.1.2
