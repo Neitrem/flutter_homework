@@ -21,7 +21,8 @@ class NavigationBarState extends State<NavigationBar> {
     return BottomNavigationBar(
     currentIndex: currentIndex,
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.orange,
+    selectedItemColor: Colors.amber,
+    unselectedItemColor: Color.fromARGB(255, 37, 37, 37),
     showUnselectedLabels: false,
     iconSize: 30.0,
     selectedFontSize: 14.0,

@@ -34,15 +34,31 @@ class Screen extends StatefulWidget {
 class ScreenState extends State<Screen> {
   final screens = [
     ListPage(),
-    Center(child: Text('Home'),),
+    MainPage(),
     MainPage()
   ];
   late Widget currentPage = screens[1];
-  
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: currentPage,
+    body: Column(children: [Container(
+          height: 80,
+          color: Color.fromARGB(255, 37, 37, 37),
+          child: Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/me.jpg'),
+                  radius: 25,
+                )
+              ],
+            ),
+          )
+        ),
+        Expanded(child: currentPage)],),
+
+
     bottomNavigationBar: navBar.NavigationBar(refreshParent: refresh),
   );
 

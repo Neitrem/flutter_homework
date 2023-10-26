@@ -1,7 +1,7 @@
 name: flutter_application_1
 flutter:
   assets:
-    - assets/music_images/
+    - assets/images/
   uses-material-design: true
 description: A new Flutter project.
 
