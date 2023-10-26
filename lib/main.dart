@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'navbar.dart' as navBar;
 import 'pages/mainPage.dart';
+import 'pages/listPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +33,7 @@ class Screen extends StatefulWidget {
  
 class ScreenState extends State<Screen> {
   final screens = [
-    MainPage(),
+    ListPage(),
     Center(child: Text('Home'),),
     MainPage()
   ];
