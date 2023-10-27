@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/passPage.dart';
 
 
 import 'navbar.dart' as navBar;
@@ -35,7 +36,7 @@ class ScreenState extends State<Screen> {
   final screens = [
     ListPage(),
     MainPage(),
-    MainPage()
+    PasswordPage()
   ];
   late Widget currentPage = screens[1];
 

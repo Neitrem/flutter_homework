@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class MainPage extends StatefulWidget {
   //final Function(int) refreshParent;
@@ -8,142 +9,152 @@ class MainPage extends StatefulWidget {
   State<StatefulWidget> createState() => MainPageState();
 }
 
+
 class MainPageState extends State<MainPage> {
-  //final Function(int) refreshParent;
+  int activeIndex = 0;
+
+  List<List<String>> data = [
+    ['music_1', 'Король и шут', "Наблюдатель"],
+    ['music_2', 'Skillet', 'Monster'],
+    ['music_3', 'Красная плесень', "Гимн панков"],
+  ];
 
   MainPageState({Key ? key});
-
-  List<String> firstNumRow = <String>["1", "2", "3"];
-  List<String> seconNumRow = <String>["4", "5", "6"];
-  List<String> thirdNumRow = <String>["7", "8", "9"];
-
-  int pinLength = 4;
-  String pinEntered = "";
-
-  numberClicked(String number) {
-    setState(() {
-      pinEntered = pinEntered + number;
-      if(pinEntered.length == pinLength){
-        Future.delayed(const Duration(milliseconds: 500), () {  
-          pinEntered = "";
-          setState(() {});
-        });
-      }
-    });
-    
-  }
-
-  delNum() {
-    setState(() {
-      if (pinEntered.length > 0) {
-        pinEntered = pinEntered.substring(0, pinEntered.length - 1);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(100.0),
+          Container(
+            margin: EdgeInsets.only(top: 60),
+            child: CarouselSlider.builder(
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height * 0.40,
+                enlargeCenterPage: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                enlargeFactor: 0.5,
+                
+                onPageChanged: (index, reason) => 
+                  setState(() => activeIndex = index),
+              ),
+              itemCount: data.length,
+              itemBuilder: (context, index, realIndex) {
+                final img = data[index];
+                return buildImage(img![0], index);
+              }
+            ),
+          ),
+          
+          
+          Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            padding: EdgeInsets.only(top: 20),
+            height: 74,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                  (pinEntered.length >= 1) ? Icon(Icons.circle) : Icon(Icons.circle_outlined, ),
-                  (pinEntered.length >= 2) ? Icon(Icons.circle) : Icon(Icons.circle_outlined, ),
-                  (pinEntered.length >= 3) ? Icon(Icons.circle) : Icon(Icons.circle_outlined, ),
-                  (pinEntered.length >= 4) ? Icon(Icons.circle) : Icon(Icons.circle_outlined, ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(data[activeIndex][2], textAlign: TextAlign.left,  style: TextStyle(fontSize: 20),),
+                    Text(data[activeIndex][1], textAlign: TextAlign.left,  style: TextStyle(fontSize: 14, color: Colors.grey))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.reply, size: 30,),
+                    Icon(Icons.more_vert, size: 30,)
+                  ],
+                )
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(40, 40, 40, 0),
-            child: Column(
+
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            width: MediaQuery.of(context).size.width * 0.70,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: this.firstNumRow.map((e) => NumberButton(currentNum: e, click: numberClicked,)).toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: this.seconNumRow.map((e) => NumberButton(currentNum: e, click: numberClicked)).toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: this.thirdNumRow.map((e) => NumberButton(currentNum: e, click: numberClicked)).toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed:() => {}, 
-                      child: Container(
-                        width: 60.0,
-                        height: 60.0,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text("Выйти", style: TextStyle(fontSize: 12, letterSpacing: 0.1, color: Colors.black),),
-                        ) 
-                      )
-                    ),
-                    NumberButton(currentNum: "0", click: numberClicked),
-                    TextButton(
-                      onPressed:() => delNum(), 
-                      child: Container(
-                        width: 60.0,
-                        height: 60.0,
-                        color: Colors.white,
-                        child: Center(
-                          child: Icon(Icons.backspace, color: Colors.black,)
-                        ) 
-                      )
-                    ),
-                    
-                  ]
-                ),
-                
+                Icon(Icons.favorite_border),
+                Icon(Icons.skip_previous, size: 40,),
+                Icon(Icons.play_circle, size: 60,),
+                Icon(Icons.skip_next, size: 40,),
+                Icon(Icons.favorite)
               ],
-            )
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: Slider(
+              min: 0,
+              max: 100,
+              value: 30,
+              onChanged: (value) {
+
+                    
+              },
+            ),
           )
         ],
-      ),
+      ) 
+      
     );
   }
-}
 
-class NumberButton extends StatefulWidget {
-  
-  NumberButton({super.key, required this.currentNum, required this.click});
-  final String currentNum;
-  final Function(String) click;
-  
-  @override
-  State<StatefulWidget> createState() => NumberButtonState(
-    currentNum: currentNum,
-    click: click
+  Widget buildImage(String img, int index) => Container(
+    margin: EdgeInsets.symmetric(horizontal: 0),
+    color: Colors.grey,
+    child: Image(image: AssetImage("assets/images/" + img + ".jpg"),),
   );
 }
 
 
-class NumberButtonState extends State<NumberButton> {
-  NumberButtonState({Key ? key, required this.currentNum, required this.click});
-  final String currentNum;
-  final Function(String) click;
-  
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed:() => this.click(this.currentNum), 
-      child: Container(
-        width: 60.0,
-        height: 60.0,
-        color: Colors.white,
-        child: Center(
-          child: Text(this.currentNum, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),),
-        ) 
-      )
-    );
-  }
-}
+// class MainPageState extends State<MainPage> {
+//   //final Function(int) refreshParent;
+
+//   MainPageState({Key ? key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Column(
+//         children: [
+//           Container(
+//             margin: EdgeInsets.only(top: 100, bottom: 40),
+//             height: MediaQuery.of(context).size.height * 0.30,
+//             child: ListView (
+//               scrollDirection: Axis.horizontal,
+//               children: [
+//                 ClipRRect(
+//                   borderRadius: BorderRadius.circular(25.0),
+//                   child: Image(
+//                     image: AssetImage("assets/images/music_1.jpg"),
+                    
+//                   )
+//                 ),
+//                 ClipRRect(
+//                   borderRadius: BorderRadius.circular(25.0),
+//                   child: Image(
+//                     image: AssetImage("assets/images/music_1.jpg"),
+                    
+//                   )
+//                 ),
+//                 ClipRRect(
+//                   borderRadius: BorderRadius.circular(25.0),
+//                   child: Image(
+//                     image: AssetImage("assets/images/music_1.jpg"),
+                    
+//                   )
+//                 ),
+//               ],
+//             ),
+//           )
+          
+//         ],
+//       ) 
+//     );
+//   }
+// }
+
